@@ -79,6 +79,7 @@ class OauthGuid(object):
             callback = self.callback
             if callback and callable(callback):
                 self._destroy()
+                webView.stop_loading()
                 return callback(uri)
             return uri
     
