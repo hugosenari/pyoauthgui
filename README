@@ -1,0 +1,9 @@
+Basic. GTK/Webkit, interface for Oauth2
+
+Usage:
+    yuri = 'https://some_service.oauth.url'
+    def callback (arg):# arg is code for oauth2
+        print 'callbacked: ', arg
+        return arg
+    oauthGui = OauthGui(yuri, callback)
+    gtk.main()
