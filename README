@@ -7,3 +7,9 @@ Usage:
         return arg
     oauthGui = OauthGui(yuri, callback)
     gtk.main()
+    
+Know Issues:
+	1 - ssl error when use yql after webkit browser
+	2 - wx.html.HtmlWindow cannot open https
+	
+	This two bugs make this module useless :(
