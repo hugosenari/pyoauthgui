@@ -59,6 +59,9 @@ class OauthGuid(object):
         self.window.set_title(self.tx_title)
         vbox = gtk.VBox()
         self.window.maximize()
+        entry = gtk.Entry()
+        entry.set_text(self.uri)
+        vbox.add(entry)
         ##draw broser
         browser = webkit.WebView()
         def callback (*args): self._callback(*args)
