@@ -58,7 +58,6 @@ class OauthGuid(object):
         self.window = gtk.Window()
         self.window.set_title(self.tx_title)
         vbox = gtk.VBox()
-        self.window.maximize()
         entry = gtk.Entry()
         entry.set_text(self.uri)
         vbox.add(entry)

@@ -58,22 +58,18 @@ class OauthGuid(object):
     def _show(self):
         ##draw window
         window = wx.Frame(None, title=self.tx_title)
-        window.Maximize()
-        window.Show()
         self.app.SetTopWindow(window)
         self.window = window
-        vbox = wx.BoxSizer(wx.VERTICAL)
+        root_box = wx.BoxSizer(wx.VERTICAL)
+        window.SetSizer(root_box)
         
-        ##draw form fields
-        label = wx.StaticText(window, label=self.tx_label)
-        entry = wx.TextCtrl(window, size=wx.Size(270, -1))
-        self.entry = entry
-        hbox = wx.BoxSizer(wx.HORIZONTAL)
-        btn = wx.Button(window, label=self.tx_bt_label)
-        def clicked(*args): self._ok(*args)
-        btn.Bind(wx.EVT_BUTTON, clicked)
-        hbox.Add(entry, 1)
-        hbox.Add(btn, 0)
+        #draw uri information
+        uri_bar = wx.BoxSizer(wx.HORIZONTAL)
+        uri_field = wx.TextCtrl(window, size=wx.Size(570, -1))
+        uri_field.SetValue(self.uri)
+        uri_bar.Add(uri_field, 1, wx.EXPAND)
+        root_box.Add(uri_bar, 0)
+        
         ##draw browser
         _self = self
         class Html_Window(HtmlWindow):
@@ -84,15 +80,31 @@ class OauthGuid(object):
 
         browser = Html_Window(window)
         browser.LoadPage(self.uri)
-        hbox1 = wx.BoxSizer(wx.HORIZONTAL)
-        vbox.Add(hbox1, 1, wx.EXPAND)
-        vbox.Add(label, 0)
-        vbox.Add(hbox, 0)
-        hbox1.Fit(window)
-        hbox1.Add(browser, 1, wx.EXPAND)
-        vbox.Fit(window)
-        window.SetSizer(vbox)
-        window.SetMinSize(vbox.GetMinSize())
+        browse_box = wx.BoxSizer(wx.HORIZONTAL)
+        browse_box.Add(browser, 1, wx.EXPAND)
+        root_box.Add(browse_box, 1, wx.EXPAND)
+        
+        ##draw form fields
+        form_bar = wx.BoxSizer(wx.VERTICAL)
+        #label
+        label = wx.StaticText(window, label=self.tx_label)
+        form_bar.Add(label, 0)
+        #input and button
+        field_box = wx.BoxSizer(wx.HORIZONTAL)
+        entry = wx.TextCtrl(window, size=wx.Size(370, -1))
+        self.entry = entry
+        field_box.Add(entry, 1)
+        btn = wx.Button(window, label=self.tx_bt_label)
+        def clicked(*args): self._ok(*args)
+        btn.Bind(wx.EVT_BUTTON, clicked)
+        field_box.Add(btn, 0)
+        form_bar.Add(field_box, 0)
+        root_box.Add(form_bar, 0)
+        
+        #fit windows boxes
+        root_box.Fit(window)
+        window.SetMinSize(root_box.GetMinSize())
+        window.Show()
     
     def _callback(self, url_type, uri, redir=None):
         if url_type == 0 \
@@ -139,5 +151,5 @@ class OauthGui(OauthGuid):
 if __name__ == "__main__":
     def callback(code):
         print 'callback: ', code
-    app = OauthGui('https://localhost/', callback)
+    app = OauthGui('http://localhost/', callback)
     app.main()
